@@ -2,14 +2,16 @@ using Discord.WebSocket;
 using Discord;
 
 public class UserEvents {
+    private static ulong _welcomeChannelId;
+    private static ulong _modChannelId;
+
+    public UserEvents(ulong welcomeChannelId, ulong modChannelId) {
+        _welcomeChannelId = welcomeChannelId;
+        _modChannelId = modChannelId;
+    }
 
     // Event for when a user joins the server
-    public static async Task UserJoined(SocketGuildUser user) {
-
-        // Load .env and get the welcome channel id and bot channel id
-        DotNetEnv.Env.Load(@"../.env");
-        ulong channelId = Convert.ToUInt64(DotNetEnv.Env.GetString("WELCOME_CHANNEL_ID"));
-        ulong modChannelId = Convert.ToUInt64(DotNetEnv.Env.GetString("TEST_CHANNEL_ID"));
+    public async Task UserJoined(SocketGuildUser user) {
 
         // Write flat content to a file to contain the logs of users joining the server
         using (StreamWriter outputFile = File.AppendText("logs/join_user.txt"))
@@ -18,41 +20,50 @@ public class UserEvents {
         }
 
         // Get the channel and check if its not null using the guard clause
-        var channel = user.Guild.GetChannel(channelId) as IMessageChannel;
-        if (channel == null) {
+        var welcomeChannel = user.Guild.GetChannel(_welcomeChannelId) as IMessageChannel;
+        if (welcomeChannel == null) {
             Console.WriteLine("Error sending message on the channel");
             return;
         }
 
         // Check if the user has been banned and if so, send a message to the mod channel
-        if (File.ReadAllText("logs/banned_user.txt").Contains(user.Username)) {
-            var botChannel = user.Guild.GetChannel(modChannelId) as IMessageChannel;
+        string bannedUsers = File.ReadAllText("logs/banned_user.txt");
+        if (bannedUsers.Contains(user.Username)) {
 
-            if (botChannel == null) {
+            // Set the times banned to zero, split the content of the file line by line
+            int timesBanned = 0;
+            string[] usernames = bannedUsers.Split("\n", StringSplitOptions.RemoveEmptyEntries);
+
+            // Count and increase the counter depending on how many times the user has been banned
+            foreach (string username in usernames) {
+                timesBanned++;
+            }
+
+            // Check if the channel exists
+            var modChannel = user.Guild.GetChannel(_modChannelId) as IMessageChannel;
+            if (modChannel == null) {
                 Console.WriteLine("Error sending message on the channel");
                 return;
             }
 
-            await botChannel.SendMessageAsync($"{user.Username} ({user.DisplayName}) has joined the server. The user was previously banned");
+            // Send a message to the mod channel
+            await modChannel.SendMessageAsync($"{user.Username} ({user.DisplayName}) has joined the server. The user was previously banned. The user has been banned {timesBanned} time(s)");
         }
 
         // Send a message to the welcome channel and DM the user
-        await channel.SendMessageAsync($"Hey {user.Mention} welcome to ***4th Order of Shenaniganery***");
-        await user.SendMessageAsync("Hey! Welcome to *** 4th Of Shenaniganery ***");
+        await welcomeChannel.SendMessageAsync($"Hey {user.Mention} welcome to ***4th Order of Shenaniganery***");
+        await user.SendMessageAsync("Hey! Welcome to ***4th Of Shenaniganery ***");
     }
 
     // Event for when a user leaves the server
-    public static async Task UserLeft(SocketGuild guild, SocketUser user) {
+    public async Task UserLeft(SocketGuild guild, SocketUser user) {
         // Write flat content to a file to contain the logs of users leaving the server
         using (StreamWriter outputFile = File.AppendText("logs/leave_user.txt")) {
             await outputFile.WriteAsync($"{user.Username};{user.GlobalName}\n");
         }
     }
 
-    public static async Task UserBanned(SocketUser user, SocketGuild guild) {
-        // Load .env and get the bot channel id
-        DotNetEnv.Env.Load(@"../.env");
-        ulong channelId = Convert.ToUInt64(DotNetEnv.Env.GetString("TEST_CHANNEL_ID"));
+    public async Task UserBanned(SocketUser user, SocketGuild guild) {
 
         // Write flat content to a file containing user, time and reason
         using (StreamWriter outputFile = File.AppendText("logs/banned_user.txt"))
@@ -61,26 +72,23 @@ public class UserEvents {
         }
 
         // Get the channel and check if its not null using the guard clause
-        var channel = guild.GetChannel(channelId) as IMessageChannel;
-        if (channel == null) {
+        var modChannel = guild.GetChannel(_modChannelId) as IMessageChannel;
+        if (modChannel == null) {
             Console.WriteLine("Error sending message on the channel");
             return;
         }
 
-        await channel.SendMessageAsync($"{user.Username} ({user.GlobalName}) has been banned");
+        await modChannel.SendMessageAsync($"{user.Username} ({user.GlobalName}) has been banned");
     }
 
-    public static async Task UserUnbanned(SocketUser user, SocketGuild guild) {
-        // Load .env and get the bot channel id
-        DotNetEnv.Env.Load(@"../.env");
-        ulong channelId = Convert.ToUInt64(DotNetEnv.Env.GetString("TEST_CHANNEL_ID"));
+    public async Task UserUnbanned(SocketUser user, SocketGuild guild) {
 
-        var channel = guild.GetChannel(channelId) as IMessageChannel;
-        if (channel == null) {
+        var modChannel = guild.GetChannel(_modChannelId) as IMessageChannel;
+        if (modChannel == null) {
             Console.WriteLine("Error sending message on the channel");
             return;
         }
 
-        await channel.SendMessageAsync($"{user.Username} ({user.GlobalName}) has been unbanned. The ban record will not be removed");
+        await modChannel.SendMessageAsync($"{user.Username} ({user.GlobalName}) has been unbanned. The ban record will not be removed");
     }
 }
