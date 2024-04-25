@@ -8,7 +8,7 @@ public class MessageEvents {
         }
 
         // Case switch to respond to different messages
-        switch (message.Content) {
+        switch (message.Content.ToLower()) {
             case "!hello":
                 await message.Channel.SendMessageAsync($"Hello {message.Author.Mention}");
                 break;
