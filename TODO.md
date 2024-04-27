@@ -4,15 +4,15 @@
 
 - [ ] React with :saluting_face: to messages from mods tagging doofs or everyone
 - [ ] React to bot messages on the ideas channel with emojis
-- [ ] Simple hi message
-- [ ] Random number
+- [x] Simple hi message
+- [x] Random number
 - [ ] Answer to wrong commands
 
 ## Text based commands
 
 ### prefix: doof
 
-- [ ] Format messages that are sent on the ideas channel to embeds
+- [x] Format messages that are sent on the ideas channel to embeds
 - [ ] tell us about [x]: The bot will respond as if it was talking about something/someone that he knew from his childhood, possible special answers could be if the [x] is related to the doof role, ballony, or Jerry
 - [ ] help: basic help command
 - [ ] perry the platypus!: React to perry the platypus

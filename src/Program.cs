@@ -1,13 +1,16 @@
 ﻿using System.Reflection.Metadata.Ecma335;
 using Discord;
+using Discord.Commands;
 using Discord.Rest;
 using Discord.WebSocket;
 using DotNetEnv;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualBasic;
 
 public class Program {
     private static DiscordSocketClient _client;
+    private static CommandService _commands;
 
     public static async Task Main() {
         DotNetEnv.Env.Load(@"secrets/.env");
@@ -34,6 +37,10 @@ public class Program {
         _client.UserUnbanned += userEvents.UserUnbanned;
         _client.GuildScheduledEventCreated += guildEvents.GuildScheduledEventCreated;
         _client.GuildScheduledEventStarted += guildEvents.GuildScheduledEventStarted;
+
+        _commands = new CommandService();
+        CommandHandler commandHandler = new CommandHandler(_client, _commands);
+        await commandHandler.InstallCommandsAsync();
 
         // Login using the token and start the bot
         await _client.LoginAsync(TokenType.Bot, loadSecrets.getToken());
