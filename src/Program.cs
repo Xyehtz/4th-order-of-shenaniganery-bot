@@ -20,13 +20,14 @@ public class Program {
 
         GuildEvents guildEvents =  new GuildEvents(loadSecrets.getAnnouncementsChannelId(), loadSecrets.getDoofRoleId());
         UserEvents userEvents = new UserEvents(loadSecrets.getWelcomeChannelId(), loadSecrets.getModChannelId());
+        MessageEvents messageEvents = new MessageEvents(loadSecrets.getIdeasChannelId());
 
         // Start Discord client and logging of the bot
         _client = new DiscordSocketClient(config);
         _client.Log += Logger.Log;
 
         // Start sample event
-        _client.MessageReceived += MessageEvents.MessageReceived;
+        _client.MessageReceived += messageEvents.MessageReceived;
         _client.UserJoined += userEvents.UserJoined;
         _client.UserLeft += userEvents.UserLeft;
         _client.UserBanned += userEvents.UserBanned;

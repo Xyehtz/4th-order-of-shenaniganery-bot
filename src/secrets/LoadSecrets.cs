@@ -7,6 +7,7 @@ public class LoadSecrets {
     public Func<ulong> getWelcomeChannelId = () => { return Convert.ToUInt64(DotNetEnv.Env.GetString("WELCOME_CHANNEL_ID")); };
     public Func<ulong> getAnnouncementsChannelId = () => { return Convert.ToUInt64(DotNetEnv.Env.GetString("ANNOUNCEMENTS_CHANNEL_ID")); };
     public Func<ulong> getGeneralChannelId = () => { return Convert.ToUInt64(DotNetEnv.Env.GetString("GENERAL_CHANNEL_ID")); };
+    public Func<ulong> getIdeasChannelId = () => { return Convert.ToUInt64(DotNetEnv.Env.GetString("IDEAS_CHANNEL_ID")); };
     public Func<ulong> getTestRoleId = () => { return Convert.ToUInt64(DotNetEnv.Env.GetString("TEST_ROLE_ID")); };
     public Func<ulong> getDoofRoleId = () => { return Convert.ToUInt64(DotNetEnv.Env.GetString("DOOF_ROLE_ID")); };
 }

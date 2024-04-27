@@ -1,13 +1,18 @@
 # TODO
 
-## Message events (IDEAS)
+## Message events
 
-- [ ] Format messages that are sent on the ideas channel to embeds
+- [ ] React with :saluting_face: to messages from mods tagging doofs or everyone
+- [ ] React to bot messages on the ideas channel with emojis
+- [ ] Simple hi message
+- [ ] Random number
+- [ ] Answer to wrong commands
 
-## Text based commands (IDEAS)
+## Text based commands
 
 ### prefix: doof
 
+- [ ] Format messages that are sent on the ideas channel to embeds
 - [ ] tell us about [x]: The bot will respond as if it was talking about something/someone that he knew from his childhood, possible special answers could be if the [x] is related to the doof role, ballony, or Jerry
 - [ ] help: basic help command
 - [ ] perry the platypus!: React to perry the platypus
@@ -17,7 +22,7 @@
 - [ ] give ideas for the next club meeting
 - [ ] give me idas to [x]
 
-## Slash commands (IDEAS)
+## Slash commands
 
 - [ ] play the albanian anthem in VC, if the user is not on VC send a link
 - [ ] play the Doofenshmirtz Evil Incorporated jingle in VC, if the user is not on VC send a link
