@@ -23,7 +23,7 @@ public class Program {
 
         GuildEvents guildEvents =  new GuildEvents(loadSecrets.getAnnouncementsChannelId(), loadSecrets.getDoofRoleId());
         UserEvents userEvents = new UserEvents(loadSecrets.getWelcomeChannelId(), loadSecrets.getModChannelId());
-        MessageEvents messageEvents = new MessageEvents(loadSecrets.getIdeasChannelId());
+        MessageEvents messageEvents = new MessageEvents();
 
         // Start Discord client and logging of the bot
         _client = new DiscordSocketClient(config);
@@ -42,12 +42,16 @@ public class Program {
         CommandHandler commandHandler = new CommandHandler(_client, _commands);
         await commandHandler.InstallCommandsAsync();
 
+        Status status = new Status(_client);
+
         // Login using the token and start the bot
         await _client.LoginAsync(TokenType.Bot, loadSecrets.getToken());
         await _client.StartAsync();
 
         // Create a function to send a message to a channel when the bot is ready
         _client.Ready += async () => {
+            await status.SetGameAsync();
+
             var botChannel = _client.GetChannel(loadSecrets.getTestChannelId()) as IMessageChannel;
             var generalChannel = _client.GetChannel(loadSecrets.getGeneralChannelId()) as IMessageChannel;
 

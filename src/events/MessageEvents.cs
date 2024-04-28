@@ -4,37 +4,16 @@ using Discord.WebSocket;
 using Microsoft.VisualBasic;
 
 public class MessageEvents {
-    private static ulong _ideasChannelId;
     private Emoji hiEmoji = new Emoji("👋");
+    private Emoji saluteEmoji = new Emoji("🫡");
     private Random randNum = new Random();
-
-    public MessageEvents(ulong ideasChannelId) {
-        _ideasChannelId = ideasChannelId;
-    }
+    private readonly ulong _doofRoleId = new LoadSecrets().getDoofRoleId();
+    private readonly ulong _modRoleId = new LoadSecrets().getModRoleId();
 
     public async Task MessageReceived(SocketMessage message) {
         // Guard clause against null and bot messages
         if (message.Author.IsBot || message == null) {
             return;
-        }
-
-        if (message.Channel.Id == _ideasChannelId) {
-            var embed = new EmbedBuilder() {
-                Title = "New idea just dropped",
-                Description = message.Content.Substring(10, message.Content.Length - 10),
-                Color = Color.Purple,
-                Timestamp = DateTime.Now,
-                Fields = new List<EmbedFieldBuilder> {
-                    new EmbedFieldBuilder() {
-                        Name = "Author",
-                        Value = message.Author.Mention,
-                        IsInline = true
-                    }
-                }
-            };
-
-            await message.Channel.SendMessageAsync(embed: embed.Build());
-            await message.DeleteAsync();
         }
 
         // Case switch to respond to different messages
@@ -65,6 +44,22 @@ public class MessageEvents {
             case "rand":
                 await message.Channel.SendMessageAsync($"Your random number is: {randNum.Next(0, 1000)}");
                 break;
+        }
+
+        var user = message.Author as SocketGuildUser;
+        bool hasModRole = false;
+
+        foreach (var role in user.Roles)
+        {
+            if (role.Id.Equals(_modRoleId))
+            {
+                hasModRole = true;
+                break;
+            }
+        }
+
+        if (hasModRole && (message.Content.ToLower().Contains($"<@&{_doofRoleId}>") || message.Content.ToLower().Contains("@everyone"))) {
+            await message.AddReactionAsync(saluteEmoji);
         }
     }
 }

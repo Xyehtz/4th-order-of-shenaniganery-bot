@@ -52,7 +52,6 @@ public class UserEvents {
 
         // Send a message to the welcome channel and DM the user
         await welcomeChannel.SendMessageAsync($"Hey {user.Mention} welcome to ***4th Order of Shenaniganery***");
-        await user.SendMessageAsync("Hey! Welcome to ***4th Of Shenaniganery ***");
     }
 
     // Event for when a user leaves the server

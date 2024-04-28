@@ -1,9 +1,13 @@
 # TODO
 
+## Events
+
+- [ ] Add status (playing, watching, etc...)
+
 ## Message events
 
-- [ ] React with :saluting_face: to messages from mods tagging doofs or everyone
-- [ ] React to bot messages on the ideas channel with emojis
+- [x] React with :saluting_face: to messages from mods tagging doofs or everyone
+- [x] React to bot messages on the ideas channel with emojis
 - [x] Simple hi message
 - [x] Random number
 - [ ] Answer to wrong commands
