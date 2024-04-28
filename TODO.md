@@ -10,7 +10,7 @@
 - [x] React to bot messages on the ideas channel with emojis
 - [x] Simple hi message
 - [x] Random number
-- [ ] Answer to wrong commands
+- [x] Answer to wrong commands
 
 ## Text based commands
 

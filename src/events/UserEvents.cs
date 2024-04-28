@@ -2,13 +2,8 @@ using Discord.WebSocket;
 using Discord;
 
 public class UserEvents {
-    private static ulong _welcomeChannelId;
-    private static ulong _modChannelId;
-
-    public UserEvents(ulong welcomeChannelId, ulong modChannelId) {
-        _welcomeChannelId = welcomeChannelId;
-        _modChannelId = modChannelId;
-    }
+    private readonly ulong _welcomeChannelId = new LoadSecrets().getWelcomeChannelId();
+    private readonly ulong _modChannelId = new LoadSecrets().getModChannelId();
 
     // Event for when a user joins the server
     public async Task UserJoined(SocketGuildUser user) {

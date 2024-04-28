@@ -2,13 +2,8 @@ using Discord;
 using Discord.WebSocket;
 
 public class GuildEvents {
-    private static ulong _announcementsChannelId;
-    private static ulong _doofRoleId;
-
-    public GuildEvents(ulong announcementsChannelId, ulong doofRoleId) {
-        _announcementsChannelId = announcementsChannelId;
-        _doofRoleId = doofRoleId;
-    }
+    private static ulong _announcementsChannelId = new LoadSecrets().getAnnouncementsChannelId();
+    private static ulong _doofRoleId = new LoadSecrets().getDoofRoleId();
 
     /// <summary>
     /// This method is called when an event is created inside of the guild.

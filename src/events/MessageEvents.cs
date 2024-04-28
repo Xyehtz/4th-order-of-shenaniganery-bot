@@ -1,3 +1,4 @@
+using System.Net;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
@@ -9,6 +10,7 @@ public class MessageEvents {
     private Random randNum = new Random();
     private readonly ulong _doofRoleId = new LoadSecrets().getDoofRoleId();
     private readonly ulong _modRoleId = new LoadSecrets().getModRoleId();
+    private string[] commands = {"!idea", "!ping", "!test"};
 
     public async Task MessageReceived(SocketMessage message) {
         // Guard clause against null and bot messages
@@ -46,8 +48,18 @@ public class MessageEvents {
                 break;
         }
 
+        bool startsWithPrefix = message.Content.ToLower().StartsWith("!");
+        bool isCommand = !commands.Contains(message.Content.ToLower().Split(" ")[0]);
+
+        if (startsWithPrefix && isCommand) {
+            // We could create a new sticker of Jerry being mad after sending a command that doesn't exist
+            await message.Channel.SendMessageAsync("This command doesn't exist");
+        }
+
         var user = message.Author as SocketGuildUser;
         bool hasModRole = false;
+        bool containsDoofTag = message.Content.ToLower().Contains($"<@&{_doofRoleId}>");
+        bool containsEveryoneTag = message.Content.ToLower().Contains("@everyone");
 
         foreach (var role in user.Roles)
         {
@@ -58,7 +70,7 @@ public class MessageEvents {
             }
         }
 
-        if (hasModRole && (message.Content.ToLower().Contains($"<@&{_doofRoleId}>") || message.Content.ToLower().Contains("@everyone"))) {
+        if (hasModRole && (containsDoofTag || containsEveryoneTag)) {
             await message.AddReactionAsync(saluteEmoji);
         }
     }
