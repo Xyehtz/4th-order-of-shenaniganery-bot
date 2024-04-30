@@ -10,7 +10,7 @@ public class MessageEvents {
     private Random randNum = new Random();
     private readonly ulong _doofRoleId = new LoadSecrets().getDoofRoleId();
     private readonly ulong _modRoleId = new LoadSecrets().getModRoleId();
-    private string[] commands = {"!idea", "!ping", "!test"};
+    private string[] commands = {"!idea", "!ping", "!test", "!askdoof" };
 
     public async Task MessageReceived(SocketMessage message) {
         // Guard clause against null and bot messages
@@ -57,6 +57,11 @@ public class MessageEvents {
         }
 
         var user = message.Author as SocketGuildUser;
+
+        if (user == null) {
+            return;
+        }
+
         bool hasModRole = false;
         bool containsDoofTag = message.Content.ToLower().Contains($"<@&{_doofRoleId}>");
         bool containsEveryoneTag = message.Content.ToLower().Contains("@everyone");

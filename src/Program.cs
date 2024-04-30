@@ -41,7 +41,12 @@ public class Program {
         _client.Log += Logger.Log;
 
         // Create command service, start command handler and load commands
-        _commands = new CommandService();
+        var commandConfig = new CommandServiceConfig{
+            DefaultRunMode = 
+                RunMode.Async
+        };
+        _commands = new CommandService(commandConfig);
+
         CommandHandler commandHandler = new CommandHandler(_client, _commands);
         await commandHandler.InstallCommandsAsync();
 
