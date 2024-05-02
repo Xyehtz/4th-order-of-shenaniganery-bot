@@ -34,3 +34,10 @@ All the command ideas that appeared before in this file, such as "tell us about 
 - [ ] play the albanian anthem in VC, if the user is not on VC send a link
 - [ ] play the Doofenshmirtz Evil Incorporated jingle in VC, if the user is not on VC send a link
 
+## Documentation
+
+- [ ] Create README.md
+- [ ] Create CODE OF CONDUCT.md setting the rules of the use of the bot inside of the Discord bot
+- [ ] Create CONTRIBUTING.md 
+- [ ] Add LICENSE.md
+- [ ] Create CHANGELOG.md with the latest changes
