@@ -2,29 +2,32 @@
 
 ## Events
 
-- [ ] Add status (playing, watching, etc...)
-
-## Message events
-
-- [x] React with :saluting_face: to messages from mods tagging doofs or everyone
-- [x] React to bot messages on the ideas channel with emojis
-- [x] Simple hi message
-- [x] Random number
-- [x] Answer to wrong commands
+- [x] Add status (playing, watching, etc...)
+- [x] User events:
+    - User joined event
+    - User left event
+    - User banned event
+    - User unbanned event
+- [x] Guild events:
+    - Event created event
+    - Event started event
+- [x] Message events:
+    - React to moderation messages that tag user with the Doof role or everyone
+    - Send a message to unknown commands
+    - Obtain a random number
+    - Answer to greetings from the user
+- [x] Update status every 10 minutes
 
 ## Text based commands
 
 ### prefix: doof
 
+### Keep in mind the following
+
+All the command ideas that appeared before in this file, such as "tell us about [x]", "perry the platypus", 'tell jerry [x]" and more have been replaced the "!askDoof" command which uses llama3 locally to give unique answers to every question that the user has
+
 - [x] Format messages that are sent on the ideas channel to embeds
-- [x] tell us about [x]: The bot will respond as if it was talking about something/someone that he knew from his childhood, possible special answers could be if the [x] is related to the doof role, ballony, or Jerry
 - [ ] help: basic help command
-- [ ] perry the platypus!: React to perry the platypus
-- [ ] what/how/who is ballony: Give a background story on who Ballony is
-- [ ] tell Jerry [x]: Answer with a small opinion of the message and the answer of Jerry (imagined by the bot)
-- [ ] how will you stop Perry: Answer with ideas to stop perry the next time he appears
-- [ ] give ideas for the next club meeting
-- [ ] give me ideas to [x]
 
 ## Slash commands
 

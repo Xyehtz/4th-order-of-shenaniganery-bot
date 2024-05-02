@@ -1,17 +1,24 @@
 using Discord;
 using Discord.WebSocket;
 
+/// <summary>
+/// This class declares what the bot will do after connecting to Discord
+/// </summary>
 public class ReadyBot {
     private readonly DiscordSocketClient _client;
     private readonly ulong _testChannelId = new LoadSecrets().getTestChannelId();
     private readonly ulong _generalChannelId = new LoadSecrets().getGeneralChannelId();
-    private Status _status;
+    private IStatus _status;
 
     public ReadyBot(DiscordSocketClient client) {
         _client = client;
         _status = new Status(client);
     }
 
+    /// <summary>
+    /// This method will obtain the channels of the Ids and send a different message to both of them
+    /// </summary>
+    /// <returns></returns>
     public async Task Ready() {
         await _status.SetGameAsync();
 
@@ -24,7 +31,7 @@ public class ReadyBot {
             return;
         }
 
-        // await botChannel.SendMessageAsync($"Successfully connected to the server (Ping: {_client.Latency} ms)");
+        await botChannel.SendMessageAsync($"Successfully connected to the server (Ping: {_client.Latency} ms)");
         // await generalChannel.SendMessageAsync("Perry the Platypus!");
     }
 }

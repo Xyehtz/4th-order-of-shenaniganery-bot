@@ -1,22 +1,25 @@
 using Discord;
 using Discord.WebSocket;
 
-public class GuildEvents {
+// Interface to set the methods that must be implemented in GuildEvents
+public interface IGuildEvents {
+    Task GuildScheduledEventCreated(SocketGuildEvent guildEvent);
+    Task GuildScheduledEventStarted(SocketGuildEvent guildEvent);
+}
+
+/// <summary>
+/// Class that will implement the methods inside the IGuildEvents interface. This class is in charge of controlling the events that happen inside of the guild
+/// </summary>
+public class GuildEvents : IGuildEvents {
     private static ulong _announcementsChannelId = new LoadSecrets().getAnnouncementsChannelId();
     private static ulong _doofRoleId = new LoadSecrets().getDoofRoleId();
 
     /// <summary>
-    /// This method is called when an event is created inside of the guild.
-    /// The method will get the announcements channel and the doof doofRole in order to send an announcement tagging the members of the guild. 
-    /// The message will display the name, description (if provided) and the start time of the event
-    /// The method has a guard clause to ensure that the channel and the doofRole information is successfully retrieved
+    /// Method called when an event is created inside of the guild. It will use the announcements channel and the doof role in order to send a message with information of the event to the announcements channel tagging users with the doof rol
     /// </summary>
-    /// 
     /// <param name="guildEvent">
-    /// This parameter is sent automatically by Discord.NET when the event is triggered
-    /// This parameter gives access to the event information and also some guild information
+    /// The event that has been created along with information of it such as the time, description (if provided), the name and location
     /// </param>
-    /// 
     /// <returns>
     /// Task.CompletedTask and a message on the announcements channel
     /// </returns>
@@ -29,10 +32,22 @@ public class GuildEvents {
             return;
         }
 
+        //? Discord gives the mods the possibility to put or not a description, therefore is important to check if the description is empty or not, the same happens with the locations as they can change depending on if they are a voice channel or a custom location
+
+        // TODO - Improve message formatting and make sure to check the following cases:
+        /*  When a event is going to happen in a VC
+            When an event happens in a custom location
+            When an event contains a description
+            When events don't contain a description
+        */
+        //* Keep in mind that at least one condition related to location and one related to description can happen at the same time
+
         if (guildEvent.Description == "") {
             await announcementsChannel.SendMessageAsync($"# {doofRole.Mention} a new event is coming!\n## Details\n**Name**: {guildEvent.Name}\n**Description**: No description provided\n**Start Time**: {guildEvent.StartTime}");
             return;
         }
+
+        //? Currently, I'm thinking of a way to implement better message formats using probably a switch case and an embed
 
         await announcementsChannel.SendMessageAsync($"# {doofRole.Mention} a new event is coming!\n## Details\n **Name**: {guildEvent.Name}\n**Description**: {guildEvent.Description}\n**Start Time**: {guildEvent.StartTime}");
     }
@@ -59,6 +74,9 @@ public class GuildEvents {
             return;
         }
 
+        //? Something similar as in the GuildScheduledEventCreated method happens here, this will send a bad message when the location is just a VC
+
+        // TODO - Do the same as above
         await announcementsChannel.SendMessageAsync($"{doofRole.Mention}, **{guildEvent.Name}** has started at ***{guildEvent.Location}*** hope to see you there!");
     }
 }

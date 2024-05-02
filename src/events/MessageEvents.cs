@@ -1,9 +1,9 @@
-using System.Net;
 using Discord;
-using Discord.Commands;
 using Discord.WebSocket;
-using Microsoft.VisualBasic;
 
+/// <summary>
+/// This class is in charge of processing the messages received in the server, the MessageReceived task holds multiple steps that the bot will execute which each message it receives
+/// </summary>
 public class MessageEvents {
     private Emoji hiEmoji = new Emoji("👋");
     private Emoji saluteEmoji = new Emoji("🫡");
@@ -12,10 +12,30 @@ public class MessageEvents {
     private readonly ulong _modRoleId = new LoadSecrets().getModRoleId();
     private string[] commands = {"!idea", "!ping", "!test", "!askdoof" };
 
+    /// <summary>
+    /// The MessageReceived method is responsible for processing all the messages received in the server where the bot is a member, the bot messages will not be processed, therefore only the users messages are
+    /// </summary>
+    /// <param name="message">
+    /// The message received by the bot from the user
+    /// </param>
+    /// <returns>
+    /// Answers back with either a message or a reaction
+    /// </returns>
     public async Task MessageReceived(SocketMessage message) {
         // Guard clause against null and bot messages
         if (message.Author.IsBot || message == null) {
             return;
+        }
+
+        // This block of code will check if the message contains either:
+        //  - an unknown command (if this happens it will send a sticker)
+        //  - a message containing a tag to everyone or to the Doof role sent by the moderators (if this happens it will react with the salute emoji)
+        if (isUnknownCommandReceived(message))
+        {
+            // TODO - create a new sticker of Jerry being mad after sending a command that doesn't exist
+            await message.Channel.SendMessageAsync("This command doesn't exist");
+        } else if (isModTaggingEveryone(message)) {
+            await message.AddReactionAsync(saluteEmoji);
         }
 
         // Case switch to respond to different messages
@@ -47,36 +67,50 @@ public class MessageEvents {
                 await message.Channel.SendMessageAsync($"Your random number is: {randNum.Next(0, 1000)}");
                 break;
         }
+    }
 
+    /// <summary>
+    /// This method will check if the message starts with the prefix (!) and if so, it will check if the command exist
+    /// </summary>
+    /// <param name="message">
+    /// The message sent by the user
+    /// </param>
+    /// <returns>
+    /// Either true or false based on the result of the conditions
+    /// </returns>
+    private bool isUnknownCommandReceived(SocketMessage message) {
         bool startsWithPrefix = message.Content.ToLower().StartsWith("!");
         bool isCommand = !commands.Contains(message.Content.ToLower().Split(" ")[0]);
 
-        if (startsWithPrefix && isCommand) {
-            // We could create a new sticker of Jerry being mad after sending a command that doesn't exist
-            await message.Channel.SendMessageAsync("This command doesn't exist");
-        }
+        return startsWithPrefix && isCommand;
+    }
 
+    /// <summary>
+    /// This method will check the following:
+    ///     - If the message contains either a tag to the Doof role or to everyone
+    ///     - If the user that sent the message has mod (inator) roles
+    /// </summary>
+    /// <param name="message">
+    /// Message sent by the user
+    /// </param>
+    /// <returns>
+    /// Either true of false based on the result of the conditions below
+    /// </returns>
+    private bool isModTaggingEveryone(SocketMessage message) {
         var user = message.Author as SocketGuildUser;
 
         if (user == null) {
-            return;
+            return false;
         }
 
         bool hasModRole = false;
         bool containsDoofTag = message.Content.ToLower().Contains($"<@&{_doofRoleId}>");
         bool containsEveryoneTag = message.Content.ToLower().Contains("@everyone");
 
-        foreach (var role in user.Roles)
-        {
-            if (role.Id.Equals(_modRoleId))
-            {
-                hasModRole = true;
-                break;
-            }
+        if (user.Roles.Any(role => role.Id.Equals(_modRoleId))) {
+            hasModRole = true;
         }
 
-        if (hasModRole && (containsDoofTag || containsEveryoneTag)) {
-            await message.AddReactionAsync(saluteEmoji);
-        }
+        return hasModRole && (containsDoofTag || containsEveryoneTag);
     }
 }
