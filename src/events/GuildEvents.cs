@@ -15,7 +15,8 @@ public class GuildEvents : IGuildEvents {
     private static ulong _doofRoleId = new LoadSecrets().getDoofRoleId();
 
     /// <summary>
-    /// Method called when an event is created inside of the guild. It will use the announcements channel and the doof role in order to send a message with information of the event to the announcements channel tagging users with the doof rol
+    /// Method called when an event is created inside of the guild. It will use the announcements channel and the doof role in order to send a message with information of the event to the announcements channel tagging users with the doof rol.
+    ///! Changes where made on 03/05/2024, check the CHANGELOG file for more information
     /// </summary>
     /// <param name="guildEvent">
     /// The event that has been created along with information of it such as the time, description (if provided), the name and location
@@ -32,24 +33,47 @@ public class GuildEvents : IGuildEvents {
             return;
         }
 
-        //? Discord gives the mods the possibility to put or not a description, therefore is important to check if the description is empty or not, the same happens with the locations as they can change depending on if they are a voice channel or a custom location
+        var embed = new EmbedBuilder {
+            Title = $"A new event just dropped: {guildEvent.Name}",
+            Color = Color.Green,
+            Timestamp = DateTime.Now,
+            Fields = {
+                new EmbedFieldBuilder {
+                    Name = "Time",
+                    Value = guildEvent.StartTime
+                }
+            }
+        };
+        embed.WithAuthor("Moderation Team");
 
-        // TODO - Improve message formatting and make sure to check the following cases:
-        /*  When a event is going to happen in a VC
-            When an event happens in a custom location
-            When an event contains a description
-            When events don't contain a description
-        */
-        //* Keep in mind that at least one condition related to location and one related to description can happen at the same time
-
-        if (guildEvent.Description == "") {
-            await announcementsChannel.SendMessageAsync($"# {doofRole.Mention} a new event is coming!\n## Details\n**Name**: {guildEvent.Name}\n**Description**: No description provided\n**Start Time**: {guildEvent.StartTime}");
-            return;
+        if (!isEventChannelEmpty(guildEvent) && !isDescriptionEmpty(guildEvent)) {
+            embed.WithDescription(guildEvent.Description);
+            embed.AddField(
+                name: "Channel",
+                value: guildEvent.Channel
+            );
+        } else if (!isEventChannelEmpty(guildEvent) && isDescriptionEmpty(guildEvent)) {
+            embed.AddField(
+                name: "Channel",
+                value: guildEvent.Channel
+            );
         }
 
-        //? Currently, I'm thinking of a way to implement better message formats using probably a switch case and an embed
+        if (!isEventLocationEmpty(guildEvent) && !isDescriptionEmpty(guildEvent)) {
+            embed.WithDescription(guildEvent.Description);
+            embed.AddField(
+                name: "Location",
+                value: guildEvent.Location
+            );
+        } else if (!isEventLocationEmpty(guildEvent) && isDescriptionEmpty(guildEvent)) {
+            embed.AddField(
+                name: "Location",
+                value: guildEvent.Location
+            );
+        }
 
-        await announcementsChannel.SendMessageAsync($"# {doofRole.Mention} a new event is coming!\n## Details\n **Name**: {guildEvent.Name}\n**Description**: {guildEvent.Description}\n**Start Time**: {guildEvent.StartTime}");
+        await announcementsChannel.SendMessageAsync(doofRole.Mention);
+        await announcementsChannel.SendMessageAsync(embed: embed.Build());
     }
 
     /// <summary>
@@ -74,9 +98,26 @@ public class GuildEvents : IGuildEvents {
             return;
         }
 
-        //? Something similar as in the GuildScheduledEventCreated method happens here, this will send a bad message when the location is just a VC
+        if (!isEventChannelEmpty(guildEvent)) {
+            await announcementsChannel.SendMessageAsync($"{doofRole.Mention}, **{guildEvent.Name}** starting at <#{guildEvent.Channel.Id}>. Hope to see you there");
+        }
+        else if (!isEventLocationEmpty(guildEvent)) {
+            await announcementsChannel.SendMessageAsync($"{doofRole.Mention}, **{guildEvent.Name}** starting at **{guildEvent.Location}**. Hope to see you there");
+        }
+    }
 
-        // TODO - Do the same as above
-        await announcementsChannel.SendMessageAsync($"{doofRole.Mention}, **{guildEvent.Name}** has started at ***{guildEvent.Location}*** hope to see you there!");
+    // Method to check if the event is created in a VC
+    private bool isEventChannelEmpty(SocketGuildEvent guildEvent) {
+        return guildEvent.Channel == null;
+    }
+
+    // Method to check if the event is created on a custom location
+    private bool isEventLocationEmpty(SocketGuildEvent guildEvent) {
+        return string.IsNullOrEmpty(guildEvent.Location);
+    }
+    
+    // Method to check if the event contains a description
+    private bool isDescriptionEmpty(SocketGuildEvent guildEvent) {
+        return string.IsNullOrEmpty(guildEvent.Description);
     }
 }
