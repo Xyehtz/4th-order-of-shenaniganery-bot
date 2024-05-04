@@ -28,6 +28,7 @@ The bot contains the following commands:
 
 - !askDoof: Our most interesting command and the command that truly makes the bot unique. This command will answer questions (check our [Code of Conduct](CODE_OF_CONDUCT.md) regarding what is allowed) that the user has, using a locally installed instance of Llama3 (with [Ollama](https://github.com/ollama/ollama)) that will act as Dr. Heinz Doofenshmirtz to give funny and unique answers.
 - !jingle: This small command will play the jingle of Doofenshmirtz Evil Incorporated in a voice channel to which a user is connected.
+- !alAnthem: A small command that will play the Albanian anthem on a voice channel
 - !idea: This command will automatically format messages that contain ideas for club meetings and more, the users are free to share any type of idea that they have.
 - !ping: This command just answers with Pong and is a way for everyone to check that the bot is working properly.
 

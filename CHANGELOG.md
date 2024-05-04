@@ -2,6 +2,10 @@
 
 ## 04/05/2024
 
+### New command: alAnthem
+
+A new command has been created with the [AlbaniaModule.cs](/src/modules/AlbaniaModule.cs), the functionality is no different from the !jingle command and its module, therefore the file doesn't have many changes compared to [JingleModule.cs](/src/modules/JingleModule.cs)
+
 ### Fixed [issue #1](https://github.com/Xyehtz/4th-order-of-shenaniganery-bot/issues/1)
 
 Now the commands are case sensitive, in order to do this two changes where made in the [CommandEvents.cs](/src/events/CommandEvents.cs) and [MessageEvents.cs](/src/events/MessageEvents.cs) file. Previously the MessageEvents file used to check if messages that started with the "!" prefix contained a command that did not existed in the bot, this check was made by making every message lower case, which made it possible to sent commands either in upper or lower case.
