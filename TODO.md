@@ -28,11 +28,8 @@ All the command ideas that appeared before in this file, such as "tell us about 
 
 - [x] Format messages that are sent on the ideas channel to embeds
 - [ ] help: basic help command
-
-## Slash commands
-
 - [ ] play the albanian anthem in VC, if the user is not on VC send a link
-- [ ] play the Doofenshmirtz Evil Incorporated jingle in VC, if the user is not on VC send a link
+- [x] play the Doofenshmirtz Evil Incorporated jingle in VC, if the user is not on VC send a link
 
 ## Documentation
 

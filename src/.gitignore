@@ -3,3 +3,4 @@ settings.json
 */.env
 logs/
 notes/club_lore*.txt
+audio/*.mp3

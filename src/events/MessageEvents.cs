@@ -10,7 +10,7 @@ public class MessageEvents {
     private Random randNum = new Random();
     private readonly ulong _doofRoleId = new LoadSecrets().getDoofRoleId();
     private readonly ulong _modRoleId = new LoadSecrets().getModRoleId();
-    private string[] commands = {"!idea", "!ping", "!test", "!askdoof" };
+    private string[] commands = {"!idea", "!ping", "!test", "!askdoof", "!jingle"};
 
     /// <summary>
     /// The MessageReceived method is responsible for processing all the messages received in the server where the bot is a member, the bot messages will not be processed, therefore only the users messages are

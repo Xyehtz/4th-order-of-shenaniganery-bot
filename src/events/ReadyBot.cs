@@ -18,7 +18,9 @@ public class ReadyBot {
     /// <summary>
     /// This method will obtain the channels of the Ids and send a different message to both of them
     /// </summary>
-    /// <returns></returns>
+    /// <returns>
+    /// Messages to two channels in the guild
+    /// </returns>
     public async Task Ready() {
         await _status.SetGameAsync();
 
