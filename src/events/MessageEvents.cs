@@ -10,7 +10,6 @@ public class MessageEvents {
     private Random randNum = new Random();
     private readonly ulong _doofRoleId = new LoadSecrets().getDoofRoleId();
     private readonly ulong _modRoleId = new LoadSecrets().getModRoleId();
-    private string[] commands = {"!idea", "!ping", "!test", "!askdoof", "!jingle"};
 
     /// <summary>
     /// The MessageReceived method is responsible for processing all the messages received in the server where the bot is a member, the bot messages will not be processed, therefore only the users messages are
@@ -30,11 +29,7 @@ public class MessageEvents {
         // This block of code will check if the message contains either:
         //  - an unknown command (if this happens it will send a sticker)
         //  - a message containing a tag to everyone or to the Doof role sent by the moderators (if this happens it will react with the salute emoji)
-        if (isUnknownCommandReceived(message))
-        {
-            // TODO - create a new sticker of Jerry being mad after sending a command that doesn't exist
-            await message.Channel.SendMessageAsync("This command doesn't exist");
-        } else if (isModTaggingEveryone(message)) {
+        if (isModTaggingEveryone(message)) {
             await message.AddReactionAsync(saluteEmoji);
         }
 
@@ -67,22 +62,6 @@ public class MessageEvents {
                 await message.Channel.SendMessageAsync($"Your random number is: {randNum.Next(0, 1000)}");
                 break;
         }
-    }
-
-    /// <summary>
-    /// This method will check if the message starts with the prefix (!) and if so, it will check if the command exist
-    /// </summary>
-    /// <param name="message">
-    /// The message sent by the user
-    /// </param>
-    /// <returns>
-    /// Either true or false based on the result of the conditions
-    /// </returns>
-    private bool isUnknownCommandReceived(SocketMessage message) {
-        bool startsWithPrefix = message.Content.ToLower().StartsWith("!");
-        bool isCommand = !commands.Contains(message.Content.ToLower().Split(" ")[0]);
-
-        return startsWithPrefix && isCommand;
     }
 
     /// <summary>

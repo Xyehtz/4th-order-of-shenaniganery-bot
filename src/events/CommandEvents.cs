@@ -12,6 +12,7 @@ public interface ICommandEvents {
 public class CommandEvents : ICommandEvents {
     private CommandService _commands;
     private DiscordSocketClient _client;
+    private string[] commands = { "!idea", "!ping", "!test", "!askDoof", "!jingle" };
 
     /// <summary>
     /// Constructor of the CommandEvents class that will obtain the CommandService and DiscordSocketClient from the Program.cs file to be used in the HandleCommandAsync() method to execute the commands
@@ -40,6 +41,12 @@ public class CommandEvents : ICommandEvents {
         bool hasMentionPrefix = message.HasMentionPrefix(_client.CurrentUser, ref argPos);
         bool isBot = message.Author.IsBot;
 
+        // Check if the command sent by the user is a command or it has a typo, if so it will send an error message to the user with a sticker of Jerry
+        if (commandWithTypoReceived(message)) {
+            await message.Channel.SendMessageAsync("This command does not exist or it has a typo");
+            await message.Channel.SendMessageAsync("Mad Jerry face should go here");
+            return;
+        }
         if (isMessageNull) return;
         if (isMessageNull || hasPrefix || hasMentionPrefix || isBot) return;
 
@@ -57,5 +64,22 @@ public class CommandEvents : ICommandEvents {
                 await logFile.WriteAsync($"[{result.ErrorReason}] {result.Error}\n");
             }
         }
+    }
+
+    /// <summary>
+    /// This method will check if the message starts with the prefix (!) and if so, it will check if the command typed by the user has a typo or not, this is done to make commands case-sensitive
+    /// </summary>
+    /// <param name="message">
+    /// The message sent by the user
+    /// </param>
+    /// <returns>
+    /// Either true or false based on the result of the conditions
+    /// </returns>
+    private bool commandWithTypoReceived(SocketMessage message)
+    {
+        bool startsWithPrefix = message.Content.StartsWith("!");
+        bool isCommand = !commands.Contains(message.Content.Split(" ")[0]);
+
+        return startsWithPrefix && isCommand;
     }
 }
