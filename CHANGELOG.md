@@ -2,6 +2,12 @@
 
 ## 04/05/2024
 
+#### Added sticker on CommandEvents
+
+### New command: !help
+
+A simple command that will send an embed message with all the available commands
+
 ### !alAnthem is now !kinderlumper
 
 So, I actually was wrong with the fact that Doofenshmirtz comes from Albania. He actually comes from a fictional country called Drusselstein, because it is fictional it doesn't have an anthem, instead I used the Der Kinderlumper song

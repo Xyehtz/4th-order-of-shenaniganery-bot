@@ -1,4 +1,5 @@
 using Discord.Commands;
+using Discord.Rest;
 using Discord.WebSocket;
 
 // Interface that will set the methods that must be implemented in CommandEvents
@@ -12,7 +13,8 @@ public interface ICommandEvents {
 public class CommandEvents : ICommandEvents {
     private CommandService _commands;
     private DiscordSocketClient _client;
-    private string[] commands = {"!idea", "!ping", "!test", "!askDoof", "!jingle", "!lore", "!kinderlumper" };
+    private readonly ulong _guildId = new LoadSecrets().getGuildId();
+    private string[] commands = {"!idea", "!ping", "!test", "!askDoof", "!jingle", "!lore", "!kinderlumper", "!help"};
 
     /// <summary>
     /// Constructor of the CommandEvents class that will obtain the CommandService and DiscordSocketClient from the Program.cs file to be used in the HandleCommandAsync() method to execute the commands
@@ -43,8 +45,9 @@ public class CommandEvents : ICommandEvents {
 
         // Check if the command sent by the user is a command or it has a typo, if so it will send an error message to the user with a sticker of Jerry
         if (commandWithTypoReceived(message)) {
-            await message.Channel.SendMessageAsync("This command does not exist or it has a typo");
-            await message.Channel.SendMessageAsync("Mad Jerry face should go here");
+            SocketSticker[] sticker = {_client.GetSticker(1236494316499894356)};
+            await message.Channel.SendMessageAsync("This command doesn't exist!");
+            await message.Channel.SendMessageAsync(stickers: sticker);
             return;
         }
         if (isMessageNull) return;
