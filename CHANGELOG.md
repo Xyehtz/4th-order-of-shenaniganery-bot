@@ -2,7 +2,15 @@
 
 ## 04/05/2024
 
-### New command: alAnthem
+### !alAnthem is now !kinderlumper
+
+So, I actually was wrong with the fact that Doofenshmirtz comes from Albania. He actually comes from a fictional country called Drusselstein, because it is fictional it doesn't have an anthem, instead I used the Der Kinderlumper song
+
+### New command: !lore
+
+A new command has been created in the [LoreModule.cs](/src/modules/LoreModule.cs) file, same as before, it has minimal changes compared to the JingleModule and works with the help of the SendAudio.cs file
+
+### New command: !alAnthem
 
 A new command has been created with the [AlbaniaModule.cs](/src/modules/AlbaniaModule.cs), the functionality is no different from the !jingle command and its module, therefore the file doesn't have many changes compared to [JingleModule.cs](/src/modules/JingleModule.cs)
 

@@ -12,7 +12,7 @@ public interface ICommandEvents {
 public class CommandEvents : ICommandEvents {
     private CommandService _commands;
     private DiscordSocketClient _client;
-    private string[] commands = {"!idea", "!ping", "!test", "!askDoof", "!jingle", "!alAnthem"};
+    private string[] commands = {"!idea", "!ping", "!test", "!askDoof", "!jingle", "!lore", "!kinderlumper" };
 
     /// <summary>
     /// Constructor of the CommandEvents class that will obtain the CommandService and DiscordSocketClient from the Program.cs file to be used in the HandleCommandAsync() method to execute the commands
