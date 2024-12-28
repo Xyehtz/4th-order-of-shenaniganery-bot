@@ -12,4 +12,5 @@ public class LoadSecrets {
     public Func<ulong> getTestRoleId = () => { return Convert.ToUInt64(DotNetEnv.Env.GetString("TEST_ROLE_ID")); };
     public Func<ulong> getModRoleId = () => { return Convert.ToUInt64(DotNetEnv.Env.GetString("INATOR_ROLE_ID")); };
     public Func<ulong> getDoofRoleId = () => { return Convert.ToUInt64(DotNetEnv.Env.GetString("DOOF_ROLE_ID")); };
+    public Func<string> getHuggingFaceApi = () => { return DotNetEnv.Env.GetString("HUGGING_FACE_API_TOKEN"); };
 }

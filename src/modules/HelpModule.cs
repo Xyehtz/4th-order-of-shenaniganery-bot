@@ -21,7 +21,7 @@ public class HelpModule : ModuleBase<SocketCommandContext> {
         - **jingle **: Play the Doofenshmirtz Evil Incorporated in the voice channel where you are listening.
         - **kinderlumper **: Play the Der Kinderlumper in the voice channel where you are listening(The Kinderlumper's gonna get ya!).
         - **lore**: Hear the great lore and gospel of Jerry and The 4th Order of Shenaniganery bot.
-        - **ideas**: If you want to give an idea for a club meeting you can use this command to send a formatted message to the <#{_ideasChannelId}>
+        - **idea**: If you want to give an idea for a club meeting you can use this command to send a formatted message to the <#{_ideasChannelId}>
         - **ping**: Just to check if the bot is alive
         - **help**: This command will show you all the available commands";
 

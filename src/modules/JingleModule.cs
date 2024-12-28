@@ -17,13 +17,13 @@ public class JingleModule : ModuleBase<SocketCommandContext> {
     [Command("jingle")]
     public async Task JingleAsync(IVoiceChannel voiceChannel = null) {
         voiceChannel = voiceChannel ?? (Context.User as IGuildUser)?.VoiceChannel;
+        Console.WriteLine(voiceChannel);
 
         if (voiceChannel == null) {
             await Context.Channel.SendMessageAsync("You need to be in a voice channel to use this command");
         }
 
         var audioClient = await voiceChannel.ConnectAsync();
-
         await sendAudio.SendAsync(audioClient, "audio/jingle.mp3");
     }
 }

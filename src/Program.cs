@@ -23,6 +23,9 @@ public class Program {
     /// Task.CompletedTask
     /// </returns>
     public async Task RunBot() {
+        string projectDirectory = Path.Combine(AppContext.BaseDirectory, "../../../");
+        Environment.CurrentDirectory = projectDirectory;
+
         // Load the .env file with the path of the file and start an instance of the LoadSecrets class
         DotNetEnv.Env.Load(@"secrets/.env");
         LoadSecrets loadSecrets = new LoadSecrets();
